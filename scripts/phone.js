@@ -1,3 +1,34 @@
+// handle search button
+const handleSearch = () => {
+  toggleLoadingSpinner(true);
+  const searchField = document.getElementById("search-field");
+  const searchText = searchField.value;
+  console.log(searchText);
+  loadPhone(searchText);
+  searchField.value = "";
+};
+
+// handle search button2
+const handleSearch2 = () => {
+  toggleLoadingSpinner(true);
+  const searchField2 = document.getElementById("search-field2");
+  const searchText2 = searchField2.value;
+  loadPhone(searchText2);
+  searchField2.value = "";
+};
+
+// loading animations
+const toggleLoadingSpinner = (isLoading) => {
+  const loadingSpinner = document.getElementById("loading-spinner");
+  if (isLoading) {
+    loadingSpinner.classList.remove("hidden");
+  } else {
+    loadingSpinner.classList.add("hidden");
+  }
+};
+
+// ####################################################################################
+
 // what async function will do is, it will look for other tasks while fetching the api link. Instead of wasting time it will do those task while the api linked is fetched
 const loadPhone = async (searchText) => {
   // response hishebe API paisi. Then API er data gulo res var e rakhsi
@@ -14,6 +45,16 @@ const loadPhone = async (searchText) => {
 const displayPhones = (phones) => {
   console.log(phones);
 
+  // display show all button if there are more than 12 models of the phones
+  const showAllContainer = document.getElementById("show-all-container");
+  if (phones.length > 12) {
+    showAllContainer.classList.remove("hidden");
+  } else {
+    showAllContainer.classList.add("hidden");
+  }
+
+  // Display only certain ammount of elements for the moment
+  phones = phones.slice(0, 12); // slicing the array and reassigning the sliced array
   const phoneContainer = document.getElementById("phone-container");
   phoneContainer.textContent = "";
   // forEach phones er protiti element k phone parameter e pathabe as an arguement.
@@ -52,21 +93,5 @@ const displayPhones = (phones) => {
     `;
     phoneContainer.appendChild(phoneCard);
   });
-};
-
-// handle search button
-const handleSearch = () => {
-  const searchField = document.getElementById("search-field");
-  const searchText = searchField.value;
-  console.log(searchText);
-  loadPhone(searchText);
-  searchField.value = "";
-};
-
-// handle search button2
-const handleSearch2 = () => {
-  const searchField2 = document.getElementById("search-field2");
-  const searchText2 = searchField2.value;
-  loadPhone(searchText2);
-  searchField2.value = "";
+  toggleLoadingSpinner(false);
 };

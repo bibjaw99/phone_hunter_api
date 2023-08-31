@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Phone Hunter API</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- =============================================================  -->
+    <!-- daisyUI and tailwindcss -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@3.6.2/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body>
+    <!-- =============================================================  -->
+    <header>
+      <h2 class="text-6xl">Huntin Phone</h2>
+    </header>
+    <!-- =============================================================  -->
+    <main>
+      <!-- searchbar section -->
+      <section class="bg-gray-100 p-4 m-4">
+        <input
+          id="search-field"
+          type="text"
+          placeholder="search ...."
+          class="input input-bordered w-full max-w-xs"
+        />
+        <button onclick="handleSearch()" class="btn btn-accent">Accent</button>
+
+        <!-- another searchbar -->
+
+        <input
+          id="search-field2"
+          type="text"
+          placeholder="search here"
+          class="input input-bordered w-full max-w-xs"
+        />
+        <button onclick="handleSearch2()" class="btn btn-primary">
+          Primary
+        </button>
+      </section>
+
+      <section>
+        <!-- phone container -->
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 container mx-auto gap-6"
+          id="phone-container"
+        ></div>
+      </section>
+    </main>
+    <!-- =============================================================  -->
+    <footer></footer>
+    <!-- =============================================================  -->
+    <!-- scripts -->
+    <script src="./scripts/phone.js"></script>
+  </body>
+</html>

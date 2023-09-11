@@ -1,24 +1,36 @@
-// handle search button
-const handleSearch = () => {
-  toggleLoadingSpinner(true);
+// search bar
+const searchHandler = (isShowAll) => {
+  loadingAnimation(true);
   const searchField = document.getElementById("search-field");
-  const searchText = searchField.value;
-  console.log(searchText);
-  loadPhone(searchText);
-  searchField.value = "";
+  const searchFieldText = searchField.value;
+  loadPhone(searchFieldText, isShowAll);
+  // searchField.value = "";
 };
 
-// handle search button2
-const handleSearch2 = () => {
-  toggleLoadingSpinner(true);
-  const searchField2 = document.getElementById("search-field2");
-  const searchText2 = searchField2.value;
-  loadPhone(searchText2);
-  searchField2.value = "";
+const handleShowAll = () => {
+  searchHandler(true);
 };
 
-// loading animations
-const toggleLoadingSpinner = (isLoading) => {
+const loadPhone = async (searchText, isShowAll) => {
+  const res = await fetch(
+    `https://openapi.programming-hero.com/api/phones?search=${searchText}`,
+  );
+  const phoneObj = await res.json();
+  const phones = phoneObj.data;
+  displayPhones(phones, isShowAll);
+};
+
+const handleShowDetails = async (slug) => {
+  console.log("kaaj hoitese", slug);
+  const res = await fetch(
+    `https://openapi.programming-hero.com/api/phone/${slug}`,
+  );
+  const details = await res.json();
+  console.log(details);
+};
+
+// the function will control the loading Animation
+const loadingAnimation = (isLoading) => {
   const loadingSpinner = document.getElementById("loading-spinner");
   if (isLoading) {
     loadingSpinner.classList.remove("hidden");
@@ -27,71 +39,59 @@ const toggleLoadingSpinner = (isLoading) => {
   }
 };
 
-// ####################################################################################
-
-// what async function will do is, it will look for other tasks while fetching the api link. Instead of wasting time it will do those task while the api linked is fetched
-const loadPhone = async (searchText) => {
-  // response hishebe API paisi. Then API er data gulo res var e rakhsi
-  const res = await fetch(
-    `https://openapi.programming-hero.com/api/phones?search=${searchText}`,
-  );
-  // response theke pawa data gulo "data" var e rakhsi, jegulo k .json() function diye JS object e rupantor korsi
-  const data = await res.json();
-  // phone info gulo array er vetor value akare object er vitor data namer key te store kora chilo ja amra browser er console tab e dekhechi
-  const phones = data.data; // it's an array of 15 objects
-  displayPhones(phones);
-};
-
-const displayPhones = (phones) => {
-  console.log(phones);
-
-  // display show all button if there are more than 12 models of the phones
-  const showAllContainer = document.getElementById("show-all-container");
-  if (phones.length > 12) {
-    showAllContainer.classList.remove("hidden");
-  } else {
-    showAllContainer.classList.add("hidden");
-  }
-
-  // Display only certain ammount of elements for the moment
-  phones = phones.slice(0, 12); // slicing the array and reassigning the sliced array
+// This function display the phones which are loaded
+const displayPhones = (phoneArray, isShowAll) => {
   const phoneContainer = document.getElementById("phone-container");
   phoneContainer.textContent = "";
-  // forEach phones er protiti element k phone parameter e pathabe as an arguement.
-  phones.forEach((phone) => {
-    // Dynamic part
-    // Now protiti phone er jonno ekta kore div create korbo
-    const phoneCard = document.createElement("div");
-    // eibar div er moddhe class include korbo
-    phoneCard.classList = "card bg-gray-100 shadow-xl p-6 text-center gap-5";
-    phoneCard.innerHTML = `
-    
-            <!-- product img -->
-            <figure class="mb-4">
-              <img src="${phone.image}" alt="Shoes" />
-            </figure>
 
-            <!-- product description part -->
-            <div class="card-body">
-              <h2 class="text-center mb-4 text-2xl font-bold">
-                ${phone.phone_name}
-              </h2>
+  const showAllContainer = document.getElementById("show-all-container");
+  if (phoneArray.length > 12 && !isShowAll) {
+    showAllContainer.classList.remove("hidden");
+  } else {
+    showAllContainer.classList.add("hidden", true);
+  }
+  // console.log("is show all: ", isShowAll);
 
-              <!-- des -->
-              <p class="mb-4">
-                There are many variations of passages of available, but the
-                majority have suffered
-              </p>
+  if (!isShowAll) {
+    phoneArray = phoneArray.slice(0, 12);
+  } else {
+    phoneArray = phoneArray.slice(0, -1);
+  }
 
-              <!-- price -->
-              <h3 class="mb-4 text-2xl font-bold">$999</h3>
-              <!-- details button -->
-              <div class="card-actions justify-center">
-                <button class="btn btn-primary">show details</button>
-              </div>
-            </div>
+  phoneArray.forEach((phone) => {
+    console.log(phone);
+    const eachProduct = document.createElement("div");
+    eachProduct.classList = "card bg-white shadow-xl p-5";
+    eachProduct.innerHTML = `
+
+      <!-- img -->
+      <figure class="mt-5";>
+        <img src=${phone.image} alt="Shoes" />
+      </figure>
+
+      <!-- text part -->
+      <div class="card-body flex flex-col gap-5">
+      <!-- title -->
+        <h2 class="text-center text-2xl font-bold">${phone.phone_name}</h2>
+
+      <!-- descriptions -->
+        <p class="text-center">
+        There are many variations of passages of available, but the majority have suffered
+        </p>
+
+        <h3 class="text-center text-2xl font-bold">$99</h3>
+        <!-- button action -->
+        <div class="card-actions justify-center">
+          <button
+            onclick="handleShowDetails('${phone.slug}')"
+            class="btn btn-primary text-white bg-blue-600 border-none text-center font-semibold px-6 py-3"
+          >
+            show more
+          </button>
+        </div>
+      </div>
     `;
-    phoneContainer.appendChild(phoneCard);
+    phoneContainer.appendChild(eachProduct);
   });
-  toggleLoadingSpinner(false);
+  loadingAnimation(false); // disable the animation after displaying the  phones
 };

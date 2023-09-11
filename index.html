@@ -1,72 +1,73 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <title>Phone Hunter API</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- =============================================================  -->
-    <!-- daisyUI and tailwindcss -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/daisyui@3.6.2/dist/full.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
+<head>
+  <title>Phone Hunter API</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <body>
-    <!-- =============================================================  -->
-    <header>
-      <h2 class="text-6xl">Huntin Phone</h2>
-    </header>
-    <!-- =============================================================  -->
-    <main>
-      <!-- searchbar section -->
-      <section class="bg-gray-100 p-4 m-4">
-        <input
-          id="search-field"
-          type="text"
-          placeholder="search ...."
-          class="input input-bordered w-full max-w-xs"
-        />
-        <button onclick="handleSearch()" class="btn btn-accent">Accent</button>
+  <!-- tailwind and daisyUI -->
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@3.6.4/dist/full.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
 
-        <!-- another searchbar -->
+<body>
+  <header>
+    <h2>Phone Hunter</h2>
+  </header>
 
-        <input
-          id="search-field2"
-          type="text"
-          placeholder="search here"
-          class="input input-bordered w-full max-w-xs"
-        />
-        <button onclick="handleSearch2()" class="btn btn-primary">
-          Primary
+  <main>
+    <!-- search button -->
+    <section class="px-5">
+      <input id="search-field" type="text" placeholder="search ..." class="input input-bordered w-full max-w-xs p-4" />
+
+      <button onclick="searchHandler()" class="btn btn-primary px-5 py-3 text-center" type="">
+        search
+      </button>
+    </section>
+    <!-- end of search box -->
+
+    <!-- display section -->
+
+    <section class="container mx-auto">
+      <!-- loading animation section -->
+
+      <div id="loading-spinner" class="text-center my-12 hidden">
+        <span class="loading loading-spinner loading-lg"></span>
+      </div>
+
+      <!-- phoen container -->
+      <div id="phone-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+
+      <!-- show all button -->
+      <div id="show-all-container" class="hidden text-center my-9">
+        <button onclick="handleShowAll()" class="btn btn-primary px-5 py-3 text-center" type="">
+          show all
         </button>
-      </section>
+      </div>
+    </section>
 
-      <section>
-        <!-- loading animation  -->
-        <div id="loading-spinner" class="text-center my-40 hidden">
-          <span class="loading loading-spiner loading-lg"></span>
+    <!-- show details modal -->
+    <!-- Open the modal using ID.showModal() method -->
+    <button class="btn" onclick="show_details_modal.showModal()">
+      open modal
+    </button>
+    <dialog id="show_details_modal" class="modal modal-bottom sm:modal-middle">
+      <div class="modal-box">
+        <h3 class="font-bold text-lg">Hello!</h3>
+        <p class="py-4">Press ESC key or click the button below to close</p>
+        <div class="modal-action">
+          <form method="dialog">
+            <!-- if there is a button in form, it will close the modal -->
+            <button class="btn">Close</button>
+          </form>
         </div>
+      </div>
+    </dialog>
+  </main>
 
-        <!-- phone container -->
-        <div
-          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 container mx-auto gap-6"
-          id="phone-container"
-        ></div>
+  <!-- sourcing js files -->
+  <script src="./scripts/phone.js"></script>
+</body>
 
-        <!-- show all button -->
-        <div id="show-all-container" class="hidden">
-          <button class="btn btn-accent" type="">Show All</button>
-        </div>
-      </section>
-    </main>
-    <!-- =============================================================  -->
-    <footer></footer>
-    <!-- =============================================================  -->
-    <!-- scripts -->
-    <script src="./scripts/phone.js"></script>
-  </body>
 </html>

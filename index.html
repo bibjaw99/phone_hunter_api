@@ -48,6 +48,11 @@
 
       <!-- search result starts -->
       <section>
+        <!-- loading animation -->
+        <div id="loading" class="hidden text-center my-7">
+          <span class="loading loading-spinner loading-lg"></span>
+        </div>
+
         <!-- phones contaniner starts -->
         <div
           id="phones-container"
@@ -56,8 +61,20 @@
         <!-- phones contaniner ends -->
       </section>
       <!-- search result ends -->
-    </main>
 
+      <!-- show all button -->
+      <section class="text-center my-6">
+        <div class="m-4 inline">
+          <button
+            onclick="showAllHandler()"
+            id="show-all"
+            class="btn btn-warning bg-red-200 border-none text-white hidden"
+          >
+            show all
+          </button>
+        </div>
+      </section>
+    </main>
     <footer></footer>
 
     <!-- javascript  files -->

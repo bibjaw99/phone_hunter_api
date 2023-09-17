@@ -1,12 +1,12 @@
 // search button
-const handleSearch = () => {
+const handleSearch = (isShowingAll) => {
   const searchField = document.getElementById("searchbox");
   const searchText = searchField.value;
-  loadPhone(searchText);
+  loadPhone(searchText, isShowingAll);
 };
 
 // the load function will fetch the api
-const loadPhone = async (searchText) => {
+const loadPhone = async (searchText, isShowingAll) => {
   // loading animation will occur until the api is loaded
   loadingSpinner(true);
   const res = await fetch(
@@ -14,7 +14,7 @@ const loadPhone = async (searchText) => {
   );
   const data = await res.json();
   const phones = data.data; //  this is where the array of phones is stored. Each of the element in this array is an object
-  displayPhones(phones);
+  displayPhones(phones, isShowingAll);
 };
 
 // loading animation
@@ -27,14 +27,30 @@ const loadingSpinner = (isLoading) => {
   }
 };
 
+// show all button handler
+const showAllHandler = () => {
+  handleSearch(true);
+};
+
 // phone container (parent div that will contain the div for each phone created dinamically)
 const phoneContainer = document.getElementById("phones-container");
 
 // displayPhones will take each element from the array and execute the operations to showcase each phones
-const displayPhones = (phonesArray) => {
+const displayPhones = (phonesArray, isShowingAll) => {
   // by default we want the parent div (phones-container) to be empty
   phoneContainer.textContent = "";
 
+  // manipulating show all button
+  const showAllButton = document.getElementById("show-all");
+  if (phonesArray.length > 12 && !isShowingAll) {
+    showAllButton.classList.remove("hidden");
+  } else {
+    showAllButton.classList.add("hidden");
+  }
+  if (!isShowingAll) {
+    phonesArray = phonesArray.slice(0, 12);
+  }
+  console.log(phonesArray.length);
   phonesArray.forEach((phone) => {
     console.log(phone);
 

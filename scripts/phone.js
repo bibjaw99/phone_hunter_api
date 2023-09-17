@@ -7,12 +7,24 @@ const handleSearch = () => {
 
 // the load function will fetch the api
 const loadPhone = async (searchText) => {
+  // loading animation will occur until the api is loaded
+  loadingSpinner(true);
   const res = await fetch(
     `https://openapi.programming-hero.com/api/phones?search=${searchText}`,
   );
   const data = await res.json();
   const phones = data.data; //  this is where the array of phones is stored. Each of the element in this array is an object
   displayPhones(phones);
+};
+
+// loading animation
+const loadingSpinner = (isLoading) => {
+  const loadAnimation = document.getElementById("loading");
+  if (isLoading) {
+    loadAnimation.classList.remove("hidden");
+  } else {
+    loadAnimation.classList.add("hidden");
+  }
 };
 
 // phone container (parent div that will contain the div for each phone created dinamically)
@@ -22,6 +34,7 @@ const phoneContainer = document.getElementById("phones-container");
 const displayPhones = (phonesArray) => {
   // by default we want the parent div (phones-container) to be empty
   phoneContainer.textContent = "";
+
   phonesArray.forEach((phone) => {
     console.log(phone);
 
@@ -62,4 +75,5 @@ const displayPhones = (phonesArray) => {
     // setp:4 append the product in a parent container
     phoneContainer.appendChild(phoneCard);
   });
+  loadingSpinner(false); // spinner will be gone after the data are shown
 };

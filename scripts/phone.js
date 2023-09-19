@@ -32,6 +32,45 @@ const showAllHandler = () => {
   handleSearch(true);
 };
 
+// show details button for earch phone
+const showDetails = async (phoneSlug) => {
+  const res = await fetch(
+    `https://openapi.programming-hero.com/api/phone/${phoneSlug}`,
+  );
+  const data = await res.json();
+  const dataFromSlug = data.data;
+  showDetailsModal(dataFromSlug);
+};
+
+const showDetailsModal = (dataFromSlug) => {
+  const showDetailsContainer = document.getElementById(
+    "show-details-container",
+  );
+  const dataModal = document.createElement("div");
+  dataModal.classList = ` w-fit bg-white shadow-xl p-5`;
+  dataModal.innerHTML = `
+    <div class= "grid gap-4">
+
+      <figure class= "items-center justify-center text-center mx-auto">
+        <img src=${dataFromSlug.image} alt="Shoes" />
+      </figure>
+      <h2 class="text-3xl font-bold">${dataFromSlug.name}</h2>
+      <div class = "text-left grid gap-3">
+        <h3 class="text-xl"><span class="font-bold">Brand:</span>${dataFromSlug.brand}</h3>
+        <h3 class="text-xl"><span class="font-bold">Storage:</span>${dataFromSlug.mainFeatures.storage}</h3>
+        <h3 class="text-xl"><span class="font-bold">Display:</span>${dataFromSlug.mainFeatures.displaySize}</h3>
+        <h3 class="text-xl"><span class="font-bold">Chipset:</span>${dataFromSlug.mainFeatures.chipset}</h3>
+        <h3 class="text-xl"><span class="font-bold">Memory:</span>${dataFromSlug.mainFeatures.memory}</h3>
+        <h3 class="text-xl"><span class="font-bold">Slug:</span>${dataFromSlug.slug}</h3>
+        <h3 class="text-xl"><span class="font-bold">Release Date:</span>${dataFromSlug.releaseDate}</h3>
+        <h3 class="text-xl"><span class="font-bold">GPS:</span>${dataFromSlug.others.GPS}</h3>
+      </div>
+    </div>
+    `;
+  showDetailsContainer.innerText = "";
+  showDetailsContainer.appendChild(dataModal);
+};
+
 // phone container (parent div that will contain the div for each phone created dinamically)
 const phoneContainer = document.getElementById("phones-container");
 
@@ -50,10 +89,7 @@ const displayPhones = (phonesArray, isShowingAll) => {
   if (!isShowingAll) {
     phonesArray = phonesArray.slice(0, 12);
   }
-  console.log(phonesArray.length);
   phonesArray.forEach((phone) => {
-    console.log(phone);
-
     // step:1 create a div
     const phoneCard = document.createElement("div"); // protiti phone er jonno ekta kore div  nilam
 
@@ -79,11 +115,11 @@ const displayPhones = (phonesArray, isShowingAll) => {
         <h3 class="text-center text-2xl font-bold">$99</h3>
         <!-- button action -->
         <div class="card-actions justify-center">
-        <button
-        class="btn btn-primary text-white bg-blue-600 border-none text-center font-semibold px-6 py-3"
-        >
-        show more
-        </button>
+          <button
+            onclick= "showDetails('${phone.slug}') ; show_details_modal.showModal() "
+            class="btn btn-primary text-white bg-blue-600 border-none text-center font-semibold px-6 py-3">
+            show details 
+          </button>
         </div>
       </div>
     `;
